@@ -1,0 +1,22 @@
+server {
+    listen 80;
+    server_name jitsuwu.agnojuli.us;
+    return 301 https://$host$request_uri;
+}
+server{
+    listen 443 ssl;
+    server_name jitsuwu.agnojuli.us;
+    ssl_protocols TLSv1.2;
+    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 5m;
+    ssl_certificate /etc/letsencrypt/live/jitsuwu.agnojuli.us/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/jitsuwu.agnojuli.us/privkey.pem;
+    location / {
+        proxy_pass https://192.168.1.54/;
+        proxy_ssl_protocols TLSv1.2;
+        proxy_ssl_certificate /etc/letsencrypt/live/jitsuwu.agnojuli.us/fullchain.pem;
+        proxy_ssl_certificate_key /etc/letsencrypt/live/jitsuwu.agnojuli.us/privkey.pem;
+  }
+}
